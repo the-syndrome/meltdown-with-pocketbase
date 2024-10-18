@@ -1,0 +1,33 @@
+version: "3"
+services:
+  pocketbase:
+    image: alpine:3.20
+    ports:
+      - 33764:8090
+    networks:
+      - meltdown
+    volumes:
+      - ./pocketbase:/app
+    working_dir: /app
+    entrypoint: /app/start-pocketbase.sh
+    env_file: .env
+  meltdown:
+    image: node:22-alpine3.20
+    ports:
+      - 33765:33765
+    networks:
+      - meltdown
+    volumes:
+      - ./app:/app
+      - ./start-meltdown.sh:/app/start-meltdown.sh
+      # for some reason it wasn't picking up all the values from `env_file`
+      # this is a work-around
+      - ./.env:/app/.env
+    entrypoint: /app/start-meltdown.sh
+    working_dir: /app
+    env_file: .env
+    depends_on:
+      - pocketbase
+
+networks:
+  meltdown:

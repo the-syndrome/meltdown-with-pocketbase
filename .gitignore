@@ -1,0 +1,7 @@
+app
+pocketbase/pb_data
+pocketbase/*.md
+pocketbase/*.zip
+pocketbase/pocketbase
+**/.env/**
+**/node_modules/**
